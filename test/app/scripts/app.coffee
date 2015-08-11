@@ -31,8 +31,8 @@ angular.module('ngTokenAuthTestApp', [
         apiUrl:                CONFIG.apiUrl
         proxyIf:               -> window.isOldIE()
         signOutUrl:              '/mangs/sign_out'
-        emailSignInPath:         '/mangs/sign_in'
-        emailRegistrationPath:   '/mangs'
+        userNameSignInPath:         '/mangs/sign_in'
+        userNameRegistrationPath:   '/mangs'
         accountUpdatePath:       '/mangs'
         accountDeletePath:       '/mangs'
         passwordResetPath:       '/mangs/password'

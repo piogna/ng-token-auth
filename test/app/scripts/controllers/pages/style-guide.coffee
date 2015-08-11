@@ -7,7 +7,7 @@ angular.module('ngTokenAuthTestApp')
     $scope.fakeUsers = _.map [0...6], ->
       firstName: Faker.Name.firstName()
       lastName:  Faker.Name.lastName()
-      email:     Faker.Internet.email()
+      userName:     Faker.Internet.userName()
 
     # Modals
     $scope.modal =

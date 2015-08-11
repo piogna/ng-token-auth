@@ -1,4 +1,4 @@
-suite 'email registration submission', ->
+suite 'userName registration submission', ->
   dfd = null
 
   suite 'successful submission', ->
@@ -10,7 +10,7 @@ suite 'email registration submission', ->
     suite 'service module', ->
       setup ->
         dfd = $auth.submitRegistration({
-          email: validEmail
+          userName: validuserName
           password: 'secret123'
           password_confirmation: 'secret123'
         })
@@ -18,7 +18,7 @@ suite 'email registration submission', ->
         $httpBackend.flush()
 
       test '$rootScope should broadcast success event', ->
-        assert $rootScope.$broadcast.calledWithMatch('auth:registration-email-success')
+        assert $rootScope.$broadcast.calledWithMatch('auth:registration-userName-success')
 
       test 'promise is resolved', ->
         resolved = false
@@ -28,7 +28,7 @@ suite 'email registration submission', ->
 
     suite 'directive access', ->
       args =
-        email: validEmail
+        userName: validuserName
         password: 'secret123'
         password_confirmation: 'secret123'
 
@@ -55,7 +55,7 @@ suite 'email registration submission', ->
           .respond(422, errorResp)
 
         dfd = $auth.submitRegistration({
-          email: validEmail
+          userName: validuserName
           password: 'secret123'
           password_confirmation: 'bogus'
         })
@@ -63,7 +63,7 @@ suite 'email registration submission', ->
         $httpBackend.flush()
 
       test '$rootScope should broadcast failure event', ->
-        assert $rootScope.$broadcast.calledWithMatch('auth:registration-email-error', errorResp)
+        assert $rootScope.$broadcast.calledWithMatch('auth:registration-userName-error', errorResp)
 
       test 'promise is rejected', ->
         caught = false
@@ -77,7 +77,7 @@ suite 'email registration submission', ->
         success: false
         errors: ['balls']
         fieldErrors: {
-          email: ['user exists']
+          userName: ['user exists']
         }
 
       setup ->
@@ -86,14 +86,14 @@ suite 'email registration submission', ->
           .respond(422, errorResp)
 
         dfd = $auth.submitRegistration({
-          email: validEmail
+          userName: validuserName
           password: 'secret123'
           password_confirmation: 'bogus'
         })
         $httpBackend.flush()
 
       test '$rootScope should broadcast failure event', ->
-        assert $rootScope.$broadcast.calledWithMatch('auth:registration-email-error', errorResp)
+        assert $rootScope.$broadcast.calledWithMatch('auth:registration-userName-error', errorResp)
 
       test 'promise is rejected', ->
         caught = false

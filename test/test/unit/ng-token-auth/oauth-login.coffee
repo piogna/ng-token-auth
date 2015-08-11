@@ -37,7 +37,7 @@ suite 'oauth2 login', ->
         expectedUser =
           id:         validUser.id
           uid:        validUser.uid
-          email:      validUser.email
+          userName:      validUser.userName
           auth_token: validToken
           expiry:     validExpiry
           client_id:  validClient
@@ -278,7 +278,7 @@ suite 'oauth2 login', ->
         expectedUser =
           id:         validUser.id
           uid:        validUser.uid
-          email:      validUser.email
+          userName:      validUser.userName
           auth_token: validToken
           expiry:     validExpiry
           client_id:  validClient

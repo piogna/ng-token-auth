@@ -86,19 +86,19 @@ angular.module('ngTokenAuthTestApp')
 
 
     # event listeners
-    $scope.$on('auth:registration-email-success', (ev, data) ->
+    $scope.$on('auth:registration-userName-success', (ev, data) ->
       $modal({
         title: "Success"
         html: true
-        content: "<div id='alert-registration-email-sent'>A registration email was "+
-          "sent to " + data.email + ". follow the instructions contained in the "+
-          "email to complete registration.</div>"
+        content: "<div id='alert-registration-userName-sent'>A registration userName was "+
+          "sent to " + data.userName + ". follow the instructions contained in the "+
+          "userName to complete registration.</div>"
       })
 
       delete $scope.registrationForm[field] for field, val of $scope.registrationForm
     )
 
-    $scope.$on('auth:registration-email-error', (ev, data) ->
+    $scope.$on('auth:registration-userName-error', (ev, data) ->
       errors = _(data.errors)
         .map((v, k) -> "#{k}: #{v}.")
         .value()
@@ -107,26 +107,26 @@ angular.module('ngTokenAuthTestApp')
       $modal({
         title: "Error"
         html: true
-        content: "<div id='alert-registration-email-failed'>Unable to send email "+
+        content: "<div id='alert-registration-userName-failed'>Unable to send userName "+
           "registration. " + errors + "</div>"
       })
     )
 
-    $scope.$on('auth:email-confirmation-success', (ev, data) ->
+    $scope.$on('auth:userName-confirmation-success', (ev, data) ->
       $modal({
         title: "Success!"
         html: true
-        content: "<div id='alert-email-confirmation-success'>Welcome "+
-          data.email+". Your account has been successfully created."+
+        content: "<div id='alert-userName-confirmation-success'>Welcome "+
+          data.userName+". Your account has been successfully created."+
           "</div>"
       })
     )
 
-    $scope.$on('auth:email-confirmation-error', (ev, data) ->
+    $scope.$on('auth:userName-confirmation-error', (ev, data) ->
       $modal({
         title: "Error!"
         html: true
-        content: "<div id='alert-email-confirmation-error'>Unable to confirm "+
+        content: "<div id='alert-userName-confirmation-error'>Unable to confirm "+
           "your account. Request a password reset to verify your identity."+
           "</div>"
       })
@@ -137,7 +137,7 @@ angular.module('ngTokenAuthTestApp')
         title: "Success"
         html: true
         content: "<div id='alert-password-reset-request-success'>Password reset "+
-          "instructions have been sent to " + params.email + "</div>"
+          "instructions have been sent to " + params.userName + "</div>"
       })
     )
 
@@ -206,7 +206,7 @@ angular.module('ngTokenAuthTestApp')
       $modal({
         title: "Success"
         html: true
-        content: "<div id='alert-auth-login-success'>Welcome back " + user.email + '</div>'
+        content: "<div id='alert-auth-login-success'>Welcome back " + user.userName + '</div>'
       })
 
       delete $scope.loginForm[field] for field, val of $scope.loginForm

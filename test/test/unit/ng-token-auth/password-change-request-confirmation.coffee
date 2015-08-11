@@ -22,7 +22,7 @@ suite 'password change confirmation', ->
     test 'that $rootScope broadcast validation success event', ->
       assert $rootScope.$broadcast.calledWithMatch('auth:password-reset-confirm-success', validUser)
 
-    test 'that $rootScope broadcast email confirmation success event', ->
+    test 'that $rootScope broadcast userName confirmation success event', ->
       assert $rootScope.$broadcast.calledWithMatch('auth:validation-success', validUser)
 
     test 'token expiry is set', ->
@@ -45,7 +45,7 @@ suite 'password change confirmation', ->
         .expectGET('/api/auth/validate_token')
         .respond(401, errorResp)
 
-      # mock the querystring for the email confirmation link
+      # mock the querystring for the userName confirmation link
       setValidPasswordConfirmQS()
 
       dfd = $auth.validateUser()

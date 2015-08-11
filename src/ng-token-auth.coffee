@@ -7,8 +7,8 @@ angular.module('ng-token-auth', ['ipCookie'])
       default:
         apiUrl:                  '/api'
         signOutUrl:              '/auth/sign_out'
-        emailSignInPath:         '/auth/sign_in'
-        emailRegistrationPath:   '/auth'
+        userNameSignInPath:         '/auth/sign_in'
+        userNameRegistrationPath:   '/auth'
         accountUpdatePath:       '/auth'
         accountDeletePath:       '/auth'
         confirmationSuccessUrl:  -> window.location.href
@@ -182,7 +182,7 @@ angular.module('ng-token-auth', ['ipCookie'])
               @validateUser({config: @getSavedConfig()})
 
 
-          # register by email. server will send confirmation email
+          # register by userName. server will send confirmation userName
           # containing a link to activate the account. the link will
           # redirect to this site.
           submitRegistration: (params, opts={}) ->
@@ -191,19 +191,19 @@ angular.module('ng-token-auth', ['ipCookie'])
               confirm_success_url: successUrl,
               config_name: @getCurrentConfigName(opts.config)
             })
-            $http.post(@apiUrl(opts.config) + @getConfig(opts.config).emailRegistrationPath, params)
+            $http.post(@apiUrl(opts.config) + @getConfig(opts.config).userNameRegistrationPath, params)
               .success((resp)->
-                $rootScope.$broadcast('auth:registration-email-success', params)
+                $rootScope.$broadcast('auth:registration-userName-success', params)
               )
               .error((resp) ->
-                $rootScope.$broadcast('auth:registration-email-error', resp)
+                $rootScope.$broadcast('auth:registration-userName-error', resp)
               )
 
 
           # capture input from user, authenticate serverside
           submitLogin: (params, opts={}) ->
             @initDfd()
-            $http.post(@apiUrl(opts.config) + @getConfig(opts.config).emailSignInPath, params)
+            $http.post(@apiUrl(opts.config) + @getConfig(opts.config).userNameSignInPath, params)
               .success((resp) =>
                 @setConfigName(opts.config)
                 authData = @getConfig(opts.config).handleLoginResponse(resp, @)
@@ -463,7 +463,7 @@ angular.module('ng-token-auth', ['ipCookie'])
 
               else
                 # token querystring is present. user most likely just came from
-                # registration email link.
+                # registration userName link.
                 search = $location.search()
 
                 # determine querystring params accounting for possible angular parsing issues
@@ -487,7 +487,7 @@ angular.module('ng-token-auth', ['ipCookie'])
                   # check if redirected from password reset link
                   @mustResetPassword = params.reset_password
 
-                  # check if redirected from email confirmation link
+                  # check if redirected from userName confirmation link
                   @firstTimeLogin = params.account_confirmation_success
 
                   # check if redirected from auth registration
@@ -562,7 +562,7 @@ angular.module('ng-token-auth', ['ipCookie'])
 
                   # broadcast event for first time login
                   if @firstTimeLogin
-                    $rootScope.$broadcast('auth:email-confirmation-success', @user)
+                    $rootScope.$broadcast('auth:userName-confirmation-success', @user)
 
                   if @oauthRegistration
                     $rootScope.$broadcast('auth:oauth-registration', @user)
@@ -575,7 +575,7 @@ angular.module('ng-token-auth', ['ipCookie'])
                 .error((data) =>
                   # broadcast event for first time login failure
                   if @firstTimeLogin
-                    $rootScope.$broadcast('auth:email-confirmation-error', data)
+                    $rootScope.$broadcast('auth:userName-confirmation-error', data)
 
                   if @mustResetPassword
                     $rootScope.$broadcast('auth:password-reset-confirm-error', data)

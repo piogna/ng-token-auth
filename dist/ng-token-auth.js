@@ -8,8 +8,8 @@ angular.module('ng-token-auth', ['ipCookie']).provider('$auth', function() {
     "default": {
       apiUrl: '/api',
       signOutUrl: '/auth/sign_out',
-      emailSignInPath: '/auth/sign_in',
-      emailRegistrationPath: '/auth',
+      userNameSignInPath: '/auth/sign_in',
+      userNameRegistrationPath: '/auth',
       accountUpdatePath: '/auth',
       accountDeletePath: '/auth',
       confirmationSuccessUrl: function() {
@@ -172,10 +172,10 @@ angular.module('ng-token-auth', ['ipCookie']).provider('$auth', function() {
                 confirm_success_url: successUrl,
                 config_name: this.getCurrentConfigName(opts.config)
               });
-              return $http.post(this.apiUrl(opts.config) + this.getConfig(opts.config).emailRegistrationPath, params).success(function(resp) {
-                return $rootScope.$broadcast('auth:registration-email-success', params);
+              return $http.post(this.apiUrl(opts.config) + this.getConfig(opts.config).userNameRegistrationPath, params).success(function(resp) {
+                return $rootScope.$broadcast('auth:registration-userName-success', params);
               }).error(function(resp) {
-                return $rootScope.$broadcast('auth:registration-email-error', resp);
+                return $rootScope.$broadcast('auth:registration-userName-error', resp);
               });
             },
             submitLogin: function(params, opts) {
@@ -183,7 +183,7 @@ angular.module('ng-token-auth', ['ipCookie']).provider('$auth', function() {
                 opts = {};
               }
               this.initDfd();
-              $http.post(this.apiUrl(opts.config) + this.getConfig(opts.config).emailSignInPath, params).success((function(_this) {
+              $http.post(this.apiUrl(opts.config) + this.getConfig(opts.config).userNameSignInPath, params).success((function(_this) {
                 return function(resp) {
                   var authData;
                   _this.setConfigName(opts.config);
@@ -488,7 +488,7 @@ angular.module('ng-token-auth', ['ipCookie']).provider('$auth', function() {
                     authData = _this.getConfig(opts.config).handleTokenValidationResponse(resp);
                     _this.handleValidAuth(authData);
                     if (_this.firstTimeLogin) {
-                      $rootScope.$broadcast('auth:email-confirmation-success', _this.user);
+                      $rootScope.$broadcast('auth:userName-confirmation-success', _this.user);
                     }
                     if (_this.oauthRegistration) {
                       $rootScope.$broadcast('auth:oauth-registration', _this.user);
@@ -501,7 +501,7 @@ angular.module('ng-token-auth', ['ipCookie']).provider('$auth', function() {
                 })(this)).error((function(_this) {
                   return function(data) {
                     if (_this.firstTimeLogin) {
-                      $rootScope.$broadcast('auth:email-confirmation-error', data);
+                      $rootScope.$broadcast('auth:userName-confirmation-error', data);
                     }
                     if (_this.mustResetPassword) {
                       $rootScope.$broadcast('auth:password-reset-confirm-error', data);

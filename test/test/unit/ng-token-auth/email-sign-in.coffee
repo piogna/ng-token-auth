@@ -1,4 +1,4 @@
-suite 'email user sign in', ->
+suite 'userName user sign in', ->
   dfd = null
   suite 'successful sign in', ->
     setup ->
@@ -10,7 +10,7 @@ suite 'email user sign in', ->
         })
 
       dfd = $auth.submitLogin({
-        email: validUser.email
+        userName: validUser.userName
         password: 'secret123'
       })
 
@@ -30,7 +30,7 @@ suite 'email user sign in', ->
 
   suite 'directive access', ->
     args =
-      email: validUser.email
+      userName: validUser.userName
       password: 'secret123'
 
     test '$auth.submitLogin was called from $rootScope', ->
@@ -59,7 +59,7 @@ suite 'email user sign in', ->
         .respond(401, errorResp)
 
       dfd = $auth.submitLogin({
-        email: validUser.email
+        userName: validUser.userName
         password: 'secret123'
       })
 

@@ -1,4 +1,4 @@
-suite 'email user password change request', ->
+suite 'userName user password change request', ->
   dfd = null
   suite 'successful request', ->
     setup ->
@@ -7,7 +7,7 @@ suite 'email user password change request', ->
         .respond(201, {success: true})
 
       dfd = $auth.requestPasswordReset({
-        email: validUser.email
+        userName: validUser.userName
       })
 
       $httpBackend.flush()
@@ -23,7 +23,7 @@ suite 'email user password change request', ->
 
   suite 'directive access', ->
     args =
-      email: validUser.email
+      userName: validUser.userName
 
     test '$rootScope should broadcast success event', ->
       $httpBackend
@@ -48,7 +48,7 @@ suite 'email user password change request', ->
         .respond(401, errorResp)
 
       dfd = $auth.requestPasswordReset({
-        email: validUser.email
+        userName: validUser.userName
       })
 
       $httpBackend.flush()

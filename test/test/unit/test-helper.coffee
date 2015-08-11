@@ -25,13 +25,13 @@ validAuthHeader = {
   uid:            validUid
 }
 
-validEmail        = 'test@test.com'
-existingUserEmail = 'testExisting@test.com'
-invalidEmail      = 'gyahhh'
+validuserName        = 'test@test.com'
+existingUseruserName = 'testExisting@test.com'
+invaliduserName      = 'gyahhh'
 
 validUser =
   id:    666
-  email: validEmail
+  userName: validuserName
   uid:   validUid
 
 
@@ -77,7 +77,7 @@ setValidAuthQS = ->
   $location.search('uid',       validUid)
   $location.search('expiry',    validExpiry)
 
-setValidEmailConfirmQS = ->
+setValiduserNameConfirmQS = ->
   setValidAuthQS()
   $location.search('account_confirmation_success', true)
 
@@ -85,8 +85,8 @@ setValidOauthRegistrationQS = ->
   setValidAuthQS()
   $location.search('oauth_registration', true)
 
-setValidEmailConfirmQSForAdminUser = ->
-  setValidEmailConfirmQS()
+setValiduserNameConfirmQSForAdminUser = ->
+  setValiduserNameConfirmQS()
   $location.search('config', 'admin')
 
 

@@ -9,7 +9,7 @@
 This module provides the following features:
 
 * Oauth2 authentication
-* Email authentication, including:
+* userName authentication, including:
   * [User registration](#authsubmitregistration)
   * [Password reset](#authrequestpasswordreset)
   * [Account updates](#authupdateaccount)
@@ -49,10 +49,10 @@ This project comes bundled with a test app. You can run the demo locally by foll
   * [`auth:logout-success`](#authlogout-success)
   * [`auth:logout-error`](#authlogout-error)
   * [`auth:oauth-registration`](#authoauth-registration)
-  * [`auth:registration-email-success`](#authregistration-email-success)
-  * [`auth:registration-email-error`](#authregistration-email-error)
-  * [`auth:email-confirmation-success`](#authemail-confirmation-success)
-  * [`auth:email-confirmation-error`](#authemail-confirmation-error)
+  * [`auth:registration-userName-success`](#authregistration-userName-success)
+  * [`auth:registration-userName-error`](#authregistration-userName-error)
+  * [`auth:userName-confirmation-success`](#authuserName-confirmation-success)
+  * [`auth:userName-confirmation-error`](#authuserName-confirmation-error)
   * [`auth:password-reset-request-success`](#authpassword-reset-request-success)
   * [`auth:password-reset-request-error`](#authpassword-reset-request-error)
   * [`auth:password-reset-confirm-success`](#authpassword-reset-confirm-success)
@@ -70,8 +70,8 @@ This project comes bundled with a test app. You can run the demo locally by foll
 * [Conceptual Diagrams](#conceptual)
   * [OAuth2 Authentication](#oauth2-authentication-flow)
   * [Token Validation](#token-validation-flow)
-  * [Email Registration](#email-registration-flow)
-  * [Email Sign In](#email-sign-in-flow)
+  * [userName Registration](#userName-registration-flow)
+  * [userName Sign In](#userName-sign-in-flow)
   * [Password Reset Request](#password-reset-flow)
 * [Notes on Token Management](#about-token-management)
 * [Notes on Batch Requests](#about-batch-requests)
@@ -148,14 +148,14 @@ angular.module('myApp', ['ng-token-auth'])
       apiUrl:                  '/api',
       tokenValidationPath:     '/auth/validate_token',
       signOutUrl:              '/auth/sign_out',
-      emailRegistrationPath:   '/auth',
+      userNameRegistrationPath:   '/auth',
       accountUpdatePath:       '/auth',
       accountDeletePath:       '/auth',
       confirmationSuccessUrl:  window.location.href,
       passwordResetPath:       '/auth/password',
       passwordUpdatePath:      '/auth/password',
       passwordResetSuccessUrl: window.location.href,
-      emailSignInPath:         '/auth/sign_in',
+      userNameSignInPath:         '/auth/sign_in',
       storage:                 'cookies',
       forceValidateToken:      false,
       proxyIf:                 function() { return false; },
@@ -197,14 +197,14 @@ angular.module('myApp', ['ng-token-auth'])
 | **authProviderPaths** | an object containing paths to auth endpoints. keys are names of the providers, values are their auth paths relative to the `apiUrl`. [Read more](#oauth2-authentication-flow). |
 | **tokenValidationPath** | relative path to validate authentication tokens. [Read more](#token-validation-flow). |
 | **signOutUrl** | relative path to sign user out. this will destroy the user's token both server-side and client-side. |
-| **emailRegistrationPath** | path for submitting new email registrations. [Read more](#email-registration-flow). |
+| **userNameRegistrationPath** | path for submitting new userName registrations. [Read more](#userName-registration-flow). |
 | **accountUpdatePath** | path for submitting account update requests. [Read more](#authupdateaccount). |
 | **accountDeletePath** | path for submitting account deletion requests. [Read more](#authdestroyaccount). |
-| **confirmationSuccessUrl** | the url to which the API should redirect after users visit the link contained in email-registration emails. [Read more](#email-registration-flow). |
-| **emailSignInPath** | path for signing in using email credentials. [Read more](#email-sign-in-flow) |
-| **passwordResetPath** | path for requesting password reset emails. [Read more](#password-reset-flow). |
+| **confirmationSuccessUrl** | the url to which the API should redirect after users visit the link contained in userName-registration userNames. [Read more](#userName-registration-flow). |
+| **userNameSignInPath** | path for signing in using userName credentials. [Read more](#userName-sign-in-flow) |
+| **passwordResetPath** | path for requesting password reset userNames. [Read more](#password-reset-flow). |
 | **passwordUpdatePath** | path for submitting new passwords for authenticated users. [Read more](#password-reset-flow) |
-| **passwordResetSuccessUrl** | the URL to which the API should redirect after users visit the links contained in password-reset emails. [Read more](#password-reset-flow). |
+| **passwordResetSuccessUrl** | the URL to which the API should redirect after users visit the links contained in password-reset userNames. [Read more](#password-reset-flow). |
 | **storage** | the method used to persist tokens between sessions. cookies are used by default, but `window.localStorage` can be used as well. A custom object can also be used. Allowed strings are `cookies` and `localStorage`, otherwise an object implementing the interface defined below|
 | **forceValidateToken** | if this flag is set, the API's token validation will be called even if the auth token is not saved in `storage`. This can be useful for implementing a single sign-on (SSO) system.|
 | **proxyIf** | older browsers have trouble with CORS ([read more](#internet-explorer)). pass a method here to determine whether or not a proxy should be used. example: `function() { return !Modernizr.cors }` |
@@ -290,9 +290,9 @@ This method will broadcast the following events:
   * [`auth:validation-success`](#authvalidation-success)
   * [`auth:validation-error`](#authvalidation-error)
   * [`auth:session-expired`](#authsession-expired)
-* When visiting email confirmation links:
-  * [`auth:email-confirmation-success`](#authemail-confirmation-success)
-  * [`auth:email-confirmation-error`](#authemail-confirmation-error)
+* When visiting userName confirmation links:
+  * [`auth:userName-confirmation-success`](#authuserName-confirmation-success)
+  * [`auth:userName-confirmation-error`](#authuserName-confirmation-error)
 * When visiting password reset confirmation links:
   * [`auth:password-reset-confirm-success`](#authpassword-reset-confirm-success)
   * [`auth:password-reset-confirm-error`](#authpassword-reset-confirm-error)
@@ -340,16 +340,16 @@ angular.module('myApp', [
 This example shows how to implement access control on the client side, however access to restricted information should be limited on the server as well (using something like [pundit](https://github.com/elabs/pundit) if you're using Rails).
 
 ###$auth.submitRegistration
-Users can register by email using this method. [Read more](#email-registration-flow). Accepts an object with the following params:
+Users can register by userName using this method. [Read more](#userName-registration-flow). Accepts an object with the following params:
 
-* **email**
+* **userName**
 * **password**
 * **password_confirmation**
 
 This method broadcasts the following events:
 
-* [`auth:registration-email-success`](#authregistration-email-success)
-* [`auth:registration-email-error`](#authregistration-email-error)
+* [`auth:registration-userName-success`](#authregistration-userName-success)
+* [`auth:registration-userName-error`](#authregistration-userName-error)
 
 ##### Example use in a controller:
 ~~~javascript
@@ -372,8 +372,8 @@ angular.module('ngTokenAuthTestApp')
 ~~~html
 <form ng-submit="submitRegistration(registrationForm)" role="form" ng-init="registrationForm = {}">
   <div class="form-group">
-    <label>email</label>
-    <input type="email" name="email" ng-model="registrationForm.email" required="required" class="form-control"/>
+    <label>userName</label>
+    <input type="userName" name="userName" ng-model="registrationForm.userName" required="required" class="form-control"/>
   </div>
 
   <div class="form-group">
@@ -391,9 +391,9 @@ angular.module('ngTokenAuthTestApp')
 ~~~
 
 ###$auth.submitLogin
-Authenticate a user that registered via email. [Read more](#email-sign-in-flow). Accepts an object with the following params:
+Authenticate a user that registered via userName. [Read more](#userName-sign-in-flow). Accepts an object with the following params:
 
-* **email**
+* **userName**
 * **password**
 
 This method broadcasts the following events:
@@ -421,8 +421,8 @@ angular.module('ngTokenAuthTestApp')
 ~~~html
 <form ng-submit="submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
   <div class="form-group">
-    <label>email</label>
-    <input type="email" name="email" ng-model="loginForm.email" required="required" class="form-control"/>
+    <label>userName</label>
+    <input type="userName" name="userName" ng-model="loginForm.userName" required="required" class="form-control"/>
   </div>
 
   <div class="form-group">
@@ -464,9 +464,9 @@ angular.module('ngTokenAuthTestApp')
 ~~~
 
 ###$auth.requestPasswordReset
-Send password reset instructions to a user. This only applies to users that have registered using email. This method accepts an object with the following param:
+Send password reset instructions to a user. This only applies to users that have registered using userName. This method accepts an object with the following param:
 
-* **email**
+* **userName**
 
 This method broadcasts the following events:
 
@@ -493,8 +493,8 @@ angular.module('ngTokenAuthTestApp')
 ~~~html
 <form ng-submit="requestPasswordReset(passwordResetForm)" role="form" ng-init="passwordResetForm = {}">
   <div class="form-group">
-    <label>email</label>
-    <input type="email" name="email" ng-model="passwordResetForm.email" required="required" class="form-control"/>
+    <label>userName</label>
+    <input type="userName" name="userName" ng-model="passwordResetForm.userName" required="required" class="form-control"/>
   </div>
 
   <button type="submit" class="btn btn-primary btn-lg">Request password reset</button>
@@ -502,7 +502,7 @@ angular.module('ngTokenAuthTestApp')
 ~~~
 
 ###$auth.updatePassword
-Change an authenticated user's password. This only applies to users that have registered using email. This method accepts an object with the following params:
+Change an authenticated user's password. This only applies to users that have registered using userName. This method accepts an object with the following params:
 
 * **current_password**
 * **password**
@@ -634,7 +634,7 @@ Broadcast after successful user authentication. Event message contains the user 
 ##### Example:
 ~~~javascript
 $rootScope.$on('auth:login-success', function(ev, user) {
-    alert('Welcome ', user.email);
+    alert('Welcome ', user.userName);
 });
 ~~~
 
@@ -659,7 +659,7 @@ Broadcast when the message posted after an oauth login as the new_record attribu
 ##### Example:
 ~~~javascript
 $rootScope.$on('auth:oauth-registration', function(ev, user) {
-    alert('new user registered through oauth:' + user.email);
+    alert('new user registered through oauth:' + user.userName);
 });
 ~~~
 
@@ -692,48 +692,48 @@ $rootScope.$on('auth:logout-error', function(ev, reason) {
 });
 ~~~
 
-###auth:registration-email-success
-Broadcast after email registration requests complete successfully using the [`$auth.submitRegistration`](#authsubmitregistration) method. Message contains the params that were sent to the server.
+###auth:registration-userName-success
+Broadcast after userName registration requests complete successfully using the [`$auth.submitRegistration`](#authsubmitregistration) method. Message contains the params that were sent to the server.
 
 ##### Example:
 ~~~javascript
-$scope.$on('auth:registration-email-success', function(ev, message) {
-    alert("A registration email was sent to " + message.email);
+$scope.$on('auth:registration-userName-success', function(ev, message) {
+    alert("A registration userName was sent to " + message.userName);
 });
 ~~~
 
-###auth:registration-email-error
-Broadcast after failed email registration requests using the `$auth.submitRegistration` method. Message contains the error response.
+###auth:registration-userName-error
+Broadcast after failed userName registration requests using the `$auth.submitRegistration` method. Message contains the error response.
 
 This event is broadcast by the [`$auth.submitRegistration`](#authsubmitregistration) method.
 
 ##### Example:
 ~~~javascript
-$scope.$on('auth:registration-email-error', function(ev, reason) {
+$scope.$on('auth:registration-userName-error', function(ev, reason) {
     alert("Registration failed: " + reason.errors[0]);
 });
 ~~~
 
-###auth:email-confirmation-success
-Broadcast when users arrive from links contained in password-reset emails. This can be used to trigger "welcome" notifications to new users.
+###auth:userName-confirmation-success
+Broadcast when users arrive from links contained in password-reset userNames. This can be used to trigger "welcome" notifications to new users.
 
 This event is broadcast by the [`$auth.validateUser`](#authvalidateuser) method.
 
 ##### Example:
 ~~~javascript
-$scope.$on('auth:email-confirmation-success', function(ev, user) {
-    alert("Welcome, "+user.email+". Your account has been verified.");
+$scope.$on('auth:userName-confirmation-success', function(ev, user) {
+    alert("Welcome, "+user.userName+". Your account has been verified.");
 });
 ~~~
 
-###auth:email-confirmation-error
-Broadcast when a user arrives from a link contained in a confirmation email, but the confirmation token fails to validate.
+###auth:userName-confirmation-error
+Broadcast when a user arrives from a link contained in a confirmation userName, but the confirmation token fails to validate.
 
 This event is broadcast by the [`$auth.validateUser`](#authvalidateuser) method.
 
 ##### Example:
 ~~~javascript
-$scope.$on('auth:email-confirmation-error', function(ev, reason) {
+$scope.$on('auth:userName-confirmation-error', function(ev, reason) {
     alert("There was an error with your registration.");
 });
 ~~~
@@ -744,7 +744,7 @@ Broadcast when users successfully submit the password reset form using the [`$au
 ##### Password reset request example:
 ~~~javascript
 $scope.$on('auth:password-reset-request-success', function(ev, data) {
-    alert("Password reset instructions were sent to " + data.email);
+    alert("Password reset instructions were sent to " + data.userName);
 });
 ~~~
 
@@ -759,7 +759,7 @@ $scope.$on('auth:password-reset-request-error', function(ev, resp) {
 ~~~
 
 ###auth:password-reset-confirm-success
-Broadcast when users arrive from links contained in password reset emails. This will be the signal for your app to prompt the user to reset their password. [Read more](#password-reset-flow).
+Broadcast when users arrive from links contained in password reset userNames. This will be the signal for your app to prompt the user to reset their password. [Read more](#password-reset-flow).
 
 This event is broadcast by the [`$auth.validateUser`](#authvalidateuser) method.
 
@@ -778,7 +778,7 @@ angular.module('myApp')
 You could also choose to display a modal, or you can ignore the event completely. What you do with the `auth:password-reset-confirm-success` event is entirely your choice.
 
 ###auth:password-reset-confirm-error
-Broadcast when users arrive from links contained in password reset emails, but the server fails to validate their password reset token.
+Broadcast when users arrive from links contained in password reset userNames, but the server fails to validate their password reset token.
 
 This event is broadcast by the [`$auth.validateUser`](#authvalidateuser) method.
 
@@ -983,8 +983,8 @@ $authProvider.configure([
       apiUrl:                CONFIG.apiUrl,
       proxyIf:               function() { window.isOldIE() },
       signOutUrl:            '/evil_user_auth/sign_out',
-      emailSignInPath:       '/evil_user_auth/sign_in',
-      emailRegistrationPath: '/evil_user_auth',
+      userNameSignInPath:       '/evil_user_auth/sign_in',
+      userNameRegistrationPath: '/evil_user_auth',
       accountUpdatePath:     '/evil_user_auth',
       accountDeletePath:     '/evil_user_auth',
       passwordResetPath:     '/evil_user_auth/password',
@@ -1025,9 +1025,9 @@ $auth.authenticate('github', {
   }
 });
 
-// Email Registration
+// userName Registration
 $auth.submitRegistration({
-  email:                 $scope.email,
+  userName:                 $scope.userName,
   password:              $scope.password,
   password_confirmation: $scope.passwordConfirmation,
   favorite_color:        $scope.favoriteColor
@@ -1035,9 +1035,9 @@ $auth.submitRegistration({
   config: 'evilUser'
 });
 
-// Email Sign In
+// userName Sign In
 $auth.submitLogin({
-  email: $scope.email,
+  userName: $scope.userName,
   password: $scope.password
 }, {
   config: 'evilUser'
@@ -1045,7 +1045,7 @@ $auth.submitLogin({
 
 // Password reset request
 $auth.requestPasswordReset({
-  email: $scope.passwordResetEmail
+  userName: $scope.passwordResetuserName
 }, {
   config: 'evilUser'
 });
@@ -1145,23 +1145,23 @@ The client's tokens are stored in cookies using the ipCookie module. This is don
 
 ![validation flow](https://github.com/lynndylanhurley/ng-token-auth/raw/master/test/app/images/flow/validation-flow.jpg)
 
-## Email registration flow
+## userName registration flow
 
-This module also provides support for email registration. The following diagram illustrates this process.
+This module also provides support for userName registration. The following diagram illustrates this process.
 
-![email registration flow](https://github.com/lynndylanhurley/ng-token-auth/raw/master/test/app/images/flow/email-registration-flow.jpg)
+![userName registration flow](https://github.com/lynndylanhurley/ng-token-auth/raw/master/test/app/images/flow/userName-registration-flow.jpg)
 
-## Email sign in flow
+## userName sign in flow
 
-![email sign in flow](https://github.com/lynndylanhurley/ng-token-auth/raw/master/test/app/images/flow/email-sign-in-flow.jpg)
+![userName sign in flow](https://github.com/lynndylanhurley/ng-token-auth/raw/master/test/app/images/flow/userName-sign-in-flow.jpg)
 
 ## Password reset flow
 
-The password reset flow is similar to the email registration flow.
+The password reset flow is similar to the userName registration flow.
 
 ![password reset flow](https://github.com/lynndylanhurley/ng-token-auth/raw/master/test/app/images/flow/password-reset-flow.jpg)
 
-When the user visits the link contained in the resulting email, they will be authenticated for a single session. An event will be broadcast that can be used to prompt the user to update their password. See the [`auth:password-reset-confirm-success`](#events) event for details.
+When the user visits the link contained in the resulting userName, they will be authenticated for a single session. An event will be broadcast that can be used to prompt the user to update their password. See the [`auth:password-reset-confirm-success`](#events) event for details.
 
 ## About token management
 
@@ -1365,7 +1365,7 @@ Satellizer occupies the same problem domain as ng-token-auth. Advantages of ng-t
   * [Auth header customization](#using-alternate-header-formats).
   * [Auth response customization](#using-alternate-response-formats).
   * Supports both cookies and localStorage for session persistence.
-  * Supports [password reset](#authrequestpasswordreset) and [password update](#authupdatepassword) for users that registered by email.
+  * Supports [password reset](#authrequestpasswordreset) and [password update](#authupdatepassword) for users that registered by userName.
   * Supports [account updates](#authupdateaccount) and [account deletion](#authdestroyaccount).
   * Supports [changing tokens with each request](#about-token-management).
   * Supports [multiple user types](#using-multiple-user-types).

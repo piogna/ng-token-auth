@@ -24,8 +24,8 @@ br
             label using config:
             p {{ user.configName }}
 
-            label user email
-            p {{ user.email || "n/a" }}
+            label user userName
+            p {{ user.userName || "n/a" }}
 
             label favorite color (optional)
             p {{ user.favorite_color || "n/a" }}
@@ -92,7 +92,7 @@ br
   .col-sm-6
     .panel.panel-default
       .panel-body
-        h2 Register as an Evil User by email
+        h2 Register as an Evil User by userName
 
         p.
           Pass an optional <code>config</code> param to specify the configuration that you want to use. When the <code>config</code> param is not provided, the first available configuration will be used.
@@ -104,11 +104,11 @@ br
         )
           fieldset(ng-disabled='user.signedIn')
             .form-group
-              label email
+              label userName
               input.form-control(
-                type='email'
-                name='email'
-                ng-model='registrationForm.email'
+                type='userName'
+                name='userName'
+                ng-model='registrationForm.userName'
                 required
               )
 
@@ -153,7 +153,7 @@ br
             pre
               code.language-javascript.
                 $auth.submitRegistration({
-                  email:                 $scope.email,
+                  userName:                 $scope.userName,
                   password:              $scope.password,
                   password_confirmation: $scope.passwordConfirmation,
                   favorite_color:        $scope.favoriteColor
@@ -164,7 +164,7 @@ br
   .col-sm-6
     .panel.panel-default
       .panel-body
-        h2 Sign in as an Evil User by email
+        h2 Sign in as an Evil User by userName
 
         p.
           Pass an optional <code>config</code> param to specify the configuration that you want to use. When the <code>config</code> param is not provided, the first available configuration will be used.
@@ -176,11 +176,11 @@ br
         )
           fieldset(ng-disabled='user.signedIn')
             .form-group
-              label email
+              label userName
               input.form-control(
-                type='email'
-                name='email'
-                ng-model='loginForm.email'
+                type='userName'
+                name='userName'
+                ng-model='loginForm.userName'
                 required
               )
 
@@ -266,15 +266,15 @@ br
         )
           fieldset
             .form-group
-              label email
+              label userName
               input.form-control(
-                type='email'
-                name='email'
-                ng-model='passwordResetForm.email'
+                type='userName'
+                name='userName'
+                ng-model='passwordResetForm.userName'
                 required
               )
 
-            button.btn.btn-primary.btn-lg(type='submit') Send password reset email
+            button.btn.btn-primary.btn-lg(type='submit') Send password reset userName
 
         br
 
@@ -289,7 +289,7 @@ br
             pre
               code.language-javascript.
                 $auth.requestPasswordReset({
-                  email: $scope.passwordResetEmail
+                  userName: $scope.passwordResetuserName
                 }, {
                   config: 'evilUser'
                 });
@@ -299,14 +299,14 @@ br
       .panel-body
         h2 Update Password
 
-        p This method is only available to users that registered by email.
+        p This method is only available to users that registered by userName.
 
         p There is no need to pass a <code>config</code> param to this method. The correct user config type will be derived from session data.
 
         button.btn.btn-primary.btn-lg(
           type='button'
           ng-click='showPasswordChangeModal()'
-          ng-disabled='!user.signedIn || user.provider != "email"'
+          ng-disabled='!user.signedIn || user.provider != "userName"'
         ) Change password
 
         br
@@ -457,8 +457,8 @@ br
                 apiUrl:                CONFIG.apiUrl,
                 proxyIf:               function() { window.isOldIE() },
                 signOutUrl:              '/evil_auth/sign_out',
-                emailSignInPath:         '/evil_auth/sign_in',
-                emailRegistrationPath:   '/evil_auth',
+                userNameSignInPath:         '/evil_auth/sign_in',
+                userNameRegistrationPath:   '/evil_auth',
                 accountUpdatePath:       '/evil_auth',
                 accountDeletePath:       '/evil_auth',
                 passwordResetPath:       '/evil_auth/password',

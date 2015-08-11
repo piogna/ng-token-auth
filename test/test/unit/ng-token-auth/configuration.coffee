@@ -95,7 +95,7 @@ suite 'configuration', ->
         .respond(201, validUser)
 
       $auth.submitLogin({
-        email: validUser.email
+        userName: validUser.userName
         password: 'secret123'
       })
 

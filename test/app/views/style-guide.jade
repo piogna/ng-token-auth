@@ -198,14 +198,14 @@
             th #
             th First Name
             th Last Name
-            th Email
+            th userName
 
         tbody
           tr(ng-repeat='user in fakeUsers')
             td {{ $index }}
             td {{ user.firstName }}
             td {{ user.lastName }}
-            td {{ user.email }}
+            td {{ user.userName }}
 
 
     h3
@@ -219,14 +219,14 @@
             th #
             th First Name
             th Last Name
-            th Email
+            th userName
 
         tbody
           tr(ng-repeat='user in fakeUsers')
             td {{ $index }}
             td {{ user.firstName }}
             td {{ user.lastName }}
-            td {{ user.email }}
+            td {{ user.userName }}
 
     h3
       a.anchor#tables-bordered 
@@ -239,14 +239,14 @@
             th #
             th First Name
             th Last Name
-            th Email
+            th userName
 
         tbody
           tr(ng-repeat='user in fakeUsers')
             td {{ $index }}
             td {{ user.firstName }}
             td {{ user.lastName }}
-            td {{ user.email }}
+            td {{ user.userName }}
 
     h3
       a.anchor#tables-ctx 
@@ -259,44 +259,44 @@
             th Context
             th First Name
             th Last Name
-            th Email
+            th userName
 
         tbody
           tr
             td Default
             td {{ fakeUsers[0].firstName }}
             td {{ fakeUsers[0].lastName }}
-            td {{ fakeUsers[0].email }}
+            td {{ fakeUsers[0].userName }}
 
           tr.active
             td Active
             td {{ fakeUsers[1].firstName }}
             td {{ fakeUsers[1].lastName }}
-            td {{ fakeUsers[1].email }}
+            td {{ fakeUsers[1].userName }}
 
           tr.success
             td Success
             td {{ fakeUsers[2].firstName }}
             td {{ fakeUsers[2].lastName }}
-            td {{ fakeUsers[2].email }}
+            td {{ fakeUsers[2].userName }}
 
           tr.warning
             td Warning
             td {{ fakeUsers[3].firstName }}
             td {{ fakeUsers[3].lastName }}
-            td {{ fakeUsers[3].email }}
+            td {{ fakeUsers[3].userName }}
 
           tr.danger
             td Danger
             td {{ fakeUsers[4].firstName }}
             td {{ fakeUsers[4].lastName }}
-            td {{ fakeUsers[4].email }}
+            td {{ fakeUsers[4].userName }}
 
           tr.info
             td Info
             td {{ fakeUsers[5].firstName }}
             td {{ fakeUsers[5].lastName }}
-            td {{ fakeUsers[5].email }}
+            td {{ fakeUsers[5].userName }}
 
     h2
       a.anchor#forms 
@@ -309,8 +309,8 @@
     .sg-example
       form(role="form")
         .form-group
-          label(for="exampleInputEmail1") Email address
-          input#exampleInputEmail1.form-control(type="email", placeholder="Enter email")
+          label(for="exampleInputuserName1") userName address
+          input#exampleInputuserName1.form-control(type="userName", placeholder="Enter userName")
 
         .form-group
           label(for='emampleInputPassword1') Password
@@ -335,8 +335,8 @@
     .sg-example
       form.form-inline(role='form')
         .form-group
-          label.sr-only(for='exampleInputEmail2') Email address
-          input#exampleInputEmail2.form-control(type='email', placeholder='Enter email')
+          label.sr-only(for='exampleInputuserName2') userName address
+          input#exampleInputuserName2.form-control(type='userName', placeholder='Enter userName')
 
         .form-group
           label.sr-only(for='exampleInputPassword2') Password
@@ -356,14 +356,14 @@
     .sg-example
       form.form-horizontal
         .form-group
-          label.col-sm-2.control-label(for='inputEmail3') Email
+          label.col-sm-2.control-label(for='inputuserName3') userName
           .col-sm-10
-            input#inputEmail3.form-control(type='email', placeholder='Email')
+            input#inputuserName3.form-control(type='userName', placeholder='userName')
 
         .form-group
           label.col-sm-2.control-label(for='inputPassword3') Password
           .col-sm-10
-            input#inputEmail3.form-control(type='password', placeholder='Password')
+            input#inputuserName3.form-control(type='password', placeholder='Password')
 
         .form-group
           .col-sm-offset-2.col-sm-10

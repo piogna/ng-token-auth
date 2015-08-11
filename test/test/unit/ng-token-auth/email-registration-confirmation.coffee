@@ -1,4 +1,4 @@
-suite 'email registration confirmation', ->
+suite 'userName registration confirmation', ->
   dfd = null
   suite 'successful registration', ->
     setup ->
@@ -9,8 +9,8 @@ suite 'email registration confirmation', ->
           data: validUser
         })
 
-      # mock the querystring for the email confirmation link
-      setValidEmailConfirmQS()
+      # mock the querystring for the userName confirmation link
+      setValiduserNameConfirmQS()
 
       dfd = $auth.validateUser()
       $httpBackend.flush()
@@ -21,8 +21,8 @@ suite 'email registration confirmation', ->
     test '$rootScope broadcast validation success event', ->
       assert $rootScope.$broadcast.calledWith('auth:validation-success')    
 
-    test '$rootScope broadcast email confirmation success event', ->
-      assert $rootScope.$broadcast.calledWith('auth:email-confirmation-success')
+    test '$rootScope broadcast userName confirmation success event', ->
+      assert $rootScope.$broadcast.calledWith('auth:userName-confirmation-success')
 
     test 'token expiry is set', ->
       assert.equal(validExpiry * 1000, $auth.getConfig().parseExpiry($auth.retrieveData('auth_headers')))
@@ -61,8 +61,8 @@ suite 'email registration confirmation', ->
           errors: 'balls'
         })
 
-      # mock the querystring for the email confirmation link
-      setValidEmailConfirmQS()
+      # mock the querystring for the userName confirmation link
+      setValiduserNameConfirmQS()
 
       dfd = $auth.validateUser()
       $httpBackend.flush()
@@ -73,8 +73,8 @@ suite 'email registration confirmation', ->
     test '$rootScope broadcast validation error event', ->
       assert $rootScope.$broadcast.calledWith('auth:validation-error')
 
-    test '$rootScope broadcast email confirmation error event', ->
-      assert $rootScope.$broadcast.calledWith('auth:email-confirmation-error')
+    test '$rootScope broadcast userName confirmation error event', ->
+      assert $rootScope.$broadcast.calledWith('auth:userName-confirmation-error')
 
     test 'promise is rejected', ->
       caught = false

@@ -43,7 +43,7 @@ suite 'custom response interceptors', ->
           .respond(201, response)
 
         dfd = $auth.submitLogin({
-          email: user.uid
+          userName: user.uid
           password: 'secret123'
         })
 

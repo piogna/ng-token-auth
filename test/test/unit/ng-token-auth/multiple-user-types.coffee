@@ -4,8 +4,8 @@ suite 'multiple concurrent auth configurations', ->
   suite 'single unnamed config', ->
     defaultConfig =
       signOutUrl:              '/vega/sign_out'
-      emailSignInPath:         '/vega/sign_in'
-      emailRegistrationPath:   '/vega'
+      userNameSignInPath:         '/vega/sign_in'
+      userNameRegistrationPath:   '/vega'
       accountUpdatePath:       '/vega'
       accountDeletePath:       '/vega'
       passwordResetPath:       '/vega/password'
@@ -22,8 +22,8 @@ suite 'multiple concurrent auth configurations', ->
 
     test 'getConfig returns "default" config when no params specified', ->
       assert.equal(defaultConfig.signOutUrl, $auth.getConfig().signOutUrl)
-      assert.equal(defaultConfig.emailSignInPath, $auth.getConfig().emailSignInPath)
-      assert.equal(defaultConfig.emailRegistrationPath, $auth.getConfig().emailRegistrationPath)
+      assert.equal(defaultConfig.userNameSignInPath, $auth.getConfig().userNameSignInPath)
+      assert.equal(defaultConfig.userNameRegistrationPath, $auth.getConfig().userNameRegistrationPath)
       assert.equal(defaultConfig.accountUpdatePath, $auth.getConfig().accountUpdatePath)
       assert.equal(defaultConfig.accountDeletePath, $auth.getConfig().accountDeletePath)
       assert.equal(defaultConfig.accountResetPath, $auth.getConfig().accountResetPath)
@@ -42,7 +42,7 @@ suite 'multiple concurrent auth configurations', ->
 
     test 'submitLogin uses only config by default', ->
       args =
-        email: validUser.email
+        userName: validUser.userName
         password: 'secret123'
 
       $httpBackend
@@ -70,8 +70,8 @@ suite 'multiple concurrent auth configurations', ->
     userConfig =
       user:
         signOutUrl:              '/rigel/sign_out'
-        emailSignInPath:         '/rigel/sign_in'
-        emailRegistrationPath:   '/rigel'
+        userNameSignInPath:         '/rigel/sign_in'
+        userNameRegistrationPath:   '/rigel'
         accountUpdatePath:       '/rigel'
         accountDeletePath:       '/rigel'
         passwordResetPath:       '/rigel/password'
@@ -84,8 +84,8 @@ suite 'multiple concurrent auth configurations', ->
     adminConfig =
       admin:
         signOutUrl:              '/cygni/sign_out'
-        emailSignInPath:         '/cygni/sign_in'
-        emailRegistrationPath:   '/cygni'
+        userNameSignInPath:         '/cygni/sign_in'
+        userNameRegistrationPath:   '/cygni'
         accountUpdatePath:       '/cygni'
         accountDeletePath:       '/cygni'
         passwordResetPath:       '/cygni/password'
@@ -102,8 +102,8 @@ suite 'multiple concurrent auth configurations', ->
 
     test 'getConfig returns first ("user") config when no params specified', ->
       assert.equal(userConfig.user.signOutUrl, $auth.getConfig().signOutUrl)
-      assert.equal(userConfig.user.emailSignInPath, $auth.getConfig().emailSignInPath)
-      assert.equal(userConfig.user.emailRegistrationPath, $auth.getConfig().emailRegistrationPath)
+      assert.equal(userConfig.user.userNameSignInPath, $auth.getConfig().userNameSignInPath)
+      assert.equal(userConfig.user.userNameRegistrationPath, $auth.getConfig().userNameRegistrationPath)
       assert.equal(userConfig.user.accountUpdatePath, $auth.getConfig().accountUpdatePath)
       assert.equal(userConfig.user.accountDeletePath, $auth.getConfig().accountDeletePath)
       assert.equal(userConfig.user.accountResetPath, $auth.getConfig().accountResetPath)
@@ -113,8 +113,8 @@ suite 'multiple concurrent auth configurations', ->
 
     test 'getConfig returns "admin" config when specified', ->
       assert.equal(adminConfig.admin.signOutUrl, $auth.getConfig("admin").signOutUrl)
-      assert.equal(adminConfig.admin.emailSignInPath, $auth.getConfig("admin").emailSignInPath)
-      assert.equal(adminConfig.admin.emailRegistrationPath, $auth.getConfig("admin").emailRegistrationPath)
+      assert.equal(adminConfig.admin.userNameSignInPath, $auth.getConfig("admin").userNameSignInPath)
+      assert.equal(adminConfig.admin.userNameRegistrationPath, $auth.getConfig("admin").userNameRegistrationPath)
       assert.equal(adminConfig.admin.accountUpdatePath, $auth.getConfig("admin").accountUpdatePath)
       assert.equal(adminConfig.admin.accountDeletePath, $auth.getConfig("admin").accountDeletePath)
       assert.equal(adminConfig.admin.accountResetPath, $auth.getConfig("admin").accountResetPath)
@@ -149,7 +149,7 @@ suite 'multiple concurrent auth configurations', ->
     suite 'submitLogin', ->
       test 'uses first config by default', ->
         args =
-          email: validUser.email
+          userName: validUser.userName
           password: 'secret123'
 
         $httpBackend
@@ -165,7 +165,7 @@ suite 'multiple concurrent auth configurations', ->
 
       test 'uses second config when specified', ->
         args =
-          email: validUser.email
+          userName: validUser.userName
           password: 'secret123'
 
         $httpBackend
@@ -181,7 +181,7 @@ suite 'multiple concurrent auth configurations', ->
 
       test 'config name is persisted locally when not using the default config', ->
         args =
-          email: validUser.email
+          userName: validUser.userName
           password: 'secret123'
 
         $httpBackend
@@ -200,7 +200,7 @@ suite 'multiple concurrent auth configurations', ->
       setup ->
         # ensure that user is signed in, named config is set
         args =
-          email: validUser.email
+          userName: validUser.userName
           password: 'secret123'
 
         $httpBackend
@@ -269,7 +269,7 @@ suite 'multiple concurrent auth configurations', ->
           .respond(201, {success: true})
 
         $auth.submitRegistration({
-          email: validEmail
+          userName: validuserName
           password: 'secret123'
           password_confirmation: 'secret123'
         })
@@ -283,7 +283,7 @@ suite 'multiple concurrent auth configurations', ->
           .respond(201, {success: true})
 
         $auth.submitRegistration({
-          email: validEmail
+          userName: validuserName
           password: 'secret123'
           password_confirmation: 'secret123'
         }, {
@@ -295,7 +295,7 @@ suite 'multiple concurrent auth configurations', ->
 
     suite 'registration confirmation', ->
       test 'admin user is validated using the correct configuration', ->
-        setValidEmailConfirmQSForAdminUser()
+        setValiduserNameConfirmQSForAdminUser()
         $httpBackend
           .expectGET('/api/cygni/validate_token')
           .respond(201, successResp, validAuthHeader)
@@ -345,7 +345,7 @@ suite 'multiple concurrent auth configurations', ->
           .respond(201, {success: true})
 
         $auth.requestPasswordReset({
-          email: validUser.email
+          userName: validUser.userName
         })
 
         $httpBackend.flush()
@@ -357,7 +357,7 @@ suite 'multiple concurrent auth configurations', ->
           .respond(201, {success: true})
 
         $auth.requestPasswordReset({
-          email: validUser.email
+          userName: validUser.userName
         }, {
           config: 'admin'
         })
